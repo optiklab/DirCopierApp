@@ -5,3 +5,5 @@ I wrote this application for about 3 hours because I needed to download a bunch 
 Because I'm a developer myself I decided to spend some little time to create this application for myself to have flexibility and many ways to improve it for any additional tasks. But I think tasks like mine are obviously common, so I publish my code without any regulation or licensing. You can use it on your own like you want, copy, share, sell, anything. I will be glad for any pull request with improvements.
 
 ![](https://optiklab.github.io/blog/img/dirCopier.jpg)
+
+If you want to simply run it, please find executable file in DirCopierApp/bin/Release folder.
