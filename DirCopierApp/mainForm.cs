@@ -95,34 +95,74 @@ namespace DirCopierApp
             {
                 if (_sourceDir.StartsWith("http") || _sourceDir.StartsWith("ftp"))
                 {
-                    var webCopier = new WebCopier();
-
-                    Application.DoEvents();
-
-                    webCopier.ActionHappened += WebCopier_ActionHappened;
-
-                    if (!webCopier.CopyWebDirectoryToFolder(_sourceDir, _targetDir))
-                    {
-                        MessageBox.Show("Cannot copy from url! Read details in console!");
-                    }
+                    CopyingFromUri();
                 }
                 else
                 {
-                    var copier = new Copier();
-
-                    Application.DoEvents();
-
-                    copier.ActionHappened += Copier_ActionHappened;
-
-                    if (!copier.CopyFilesystem(_sourceDir, _targetDir))
-                    {
-                        MessageBox.Show("Cannot copy directory! Read details in console!");
-                    }
+                    CopyingInFileSystem();
                 }
             }
             catch (Exception ex)
             {
                 LogToConsole(string.Format("Unexpected error occured! Exception details: {0} {1}", ex.Message, ex.StackTrace));
+            }
+        }
+
+        private void CopyingFromUri()
+        {
+            WebCopier webCopier = null;
+            try
+            {
+                webCopier = new WebCopier();
+
+                Application.DoEvents();
+
+                webCopier.ActionHappened += WebCopier_ActionHappened;
+
+                if (!webCopier.CopyWebDirectoryToFolder(_sourceDir, _targetDir))
+                {
+                    MessageBox.Show("Cannot copy from url! Read details in console!");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogToConsole(string.Format("Unexpected error occured! Exception details: {0} {1}", ex.Message, ex.StackTrace));
+            }
+            finally
+            {
+                if (webCopier != null)
+                {
+                    webCopier.ActionHappened -= WebCopier_ActionHappened;
+                }
+            }
+        }
+
+        private void CopyingInFileSystem()
+        {
+            Copier copier = null;
+            try
+            {
+                copier = new Copier();
+
+                Application.DoEvents();
+
+                copier.ActionHappened += Copier_ActionHappened;
+
+                if (!copier.CopyFilesystem(_sourceDir, _targetDir))
+                {
+                    MessageBox.Show("Cannot copy directory! Read details in console!");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogToConsole(string.Format("Unexpected error occured! Exception details: {0} {1}", ex.Message, ex.StackTrace));
+            }
+            finally
+            {
+                if (copier != null)
+                {
+                    copier.ActionHappened -= Copier_ActionHappened;
+                }
             }
         }
 
